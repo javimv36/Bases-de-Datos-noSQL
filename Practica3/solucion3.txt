@@ -1,0 +1,32 @@
+Bases de datos NoSQL - práctica 3
+
+#Nombre1: Nerea Gómez Domínguez
+#Nombre2: Javier Martín Villarreal
+#Nombre3: Adrián Panadero González
+
+#Observaciones:
+
+#P1 Consulta: db.tutuve.update({nick:"CetoGames"}, {$set:{nick:"CetrusMax"}})
+
+#P2 Consulta: db.tutuve.update({nick:"VertolduX"}, {$push:{videos:{titulo:"Mortal Teddy Bear", vistas: 0, bloqueado: true}}})
+
+#P3 Consulta: db.tutuve.update({nick:"CalixtaRex"},{$inc : {"suscritos":1}})
+
+#P4 Consulta: db.tutuve.update({suscritos:{$gt:400}},{$set : {premium:true}}, {upsert:true, multi:true})
+
+#P5 Consulta: db.tutuve.remove({"videos.vistas":{$lt:45}})
+
+#P6 Consulta: db.numeros.drop();
+db.numeros.insert({_id:1},{n:[]});
+nums = [1,3,1,4,5,6,7,5,7];
+for (a of nums) {  db.numeros.update({},{$addToSet:{n:a}}) }
+db.numeros.find();
+
+#P7 Consulta: db.tutuve.update({}, {$unset: {old:true}}, {multi:true})
+
+#P8 Consulta: db.tutuve.update({nick:"CalixtaRex"},{$setOnInsert:{suscritos:100, videos:[]}},{upsert:true})
+
+#P9 Consulta: db.tutuve.update({nick:"VertolduX", "videos.titulo":"Mortal Teddy Bear"}, {$set:{"videos.$.bloqueado":true}})
+
+#P10 Consulta: 
+
