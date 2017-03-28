@@ -1,0 +1,50 @@
+Bases de datos NoSQL - práctica 5
+
+#Nombre1: Nerea Gómez Domínguez	
+#Nombre2: Adrián Panadero González
+#Nombre3: Javier Martín Villarreal
+
+#Observaciones:
+
+#P1 Consulta: db.tweet.aggregate([{ $match:{"user.screen":"patrioticpepe",opinion:1}},{$group: {_id:null,h:{$sum:"$hlabel"},t:{$sum:"$tlabel"},count:{$sum:1}}}])
+
+#P2 Consulta: db.tweet.aggregate([{$unwind:"$mentions"},{$group:{_id:"$mentions", total:{$sum:1}}},{$sort:{total:-1}},{$limit:1}])
+
+#P3 Consulta: db.user.aggregate( [
+  {
+    $bucket: {
+      groupBy: "$followers",
+      boundaries: [ 0, 1000, 5000, 10000, 100000 ],
+      default: "infinito"
+    }
+  }
+] )
+
+#P4 Consulta: db.user.aggregate(
+                      [
+                       {$project:
+                               {
+                        _id:0,
+                                user:["$_id", "$screen_name"]
+                               }
+                        }
+                       ]
+                     )
+
+#P5 Consulta: db.user.aggregate(
+                      [
+                        {$lookup:{
+                            from:"tweet",
+                            localField:"screen_name",
+                            foreignField:"user.screen",
+                            as: "tweets" }
+                        },
+                        {$project: {
+                            _id:0,
+                            screen_name:"$screen_name",
+                            followers:"$followers",
+                            cuantos: {"$size":"$tweets"}
+                            }
+                        }
+                       ]
+                     )
