@@ -1,0 +1,84 @@
+Bases de datos NoSQL - práctica 6
+
+#Nombre1: Javier Martín Villarreal
+#Nombre2:
+#Nombre3:
+
+#Observaciones:
+
+#P1a Insert: 
+db.lugares.insert({nombre:"Manolo", tipo:"bar", pais:"España", 
+                   posicion: {type:"Point", coordinates:[-3.7201797,40.4326352]}})
+
+#P1b Indice: 
+db.lugares.createIndex({
+        posicion : "2dsphere"
+    }
+)
+
+#P2 Consulta: 
+db.lugares.find(
+    {
+        posicion : {
+                $near: {
+                        $geometry: { 
+                            type: 'Point', 
+                            coordinates: [-3.7251149,40.4381963]
+                         },
+                         $maxDistance: 1000
+                    }
+            }
+    },{_id:0, nombre:1, tipo:1}
+)
+
+#P3a Borrado de índice:
+
+db.lugares.dropIndex({
+        posicion : "2dsphere"
+    }
+)
+
+#P3b Resultado del sistema:
+
+No devuelve nada
+
+#P4a Creación de índices:
+db.plano.createIndex({punto:1},"ipunto")
+db.plano.createIndex({desc:1},"idesc")
+
+#P4b Comentario sobre dif de tamaños:
+
+Ocupa más el índice de puntos por que genera un índice para un atributo con un par de elementos
+
+#P5 Consulta:
+
+#P6a Índice (Sí/No): Sí
+#P6b ¿Cuál? (Sí/No): ipunto
+
+#P7 Consulta: 
+db.plano.find(
+               {
+                  punto: { 
+                      $geoWithin: { 
+                          $polygon: [ 
+                              [0,0], 
+                              [3,0], 
+                              [3,3], 
+                              [0,3]
+                          ]
+                        }
+                    }
+                 }
+               )
+
+#P8 Creación de índice:
+
+
+#P9a ¿Sé puede crear el índice?(Sí/No): 
+
+#P9b ¿Por qué? (una frase): 
+
+#P10a ¿Sé puede crear el índice para mejorar?(Sí/No): 
+
+#P10b Si la respuesta es sí, copiar la instrucción para crearlo. Si es no, escribir una frase explicando por qué.
+
