@@ -1,0 +1,56 @@
+
+Práctica 7 -  NoSQL - Solución
+Nombre 1: Nerea Gómez Domínguez
+Nombre 2: Javier Martín Villarreal
+Nombre 3: Adrián Panadero González
+
+Observaciones:
+
+
+Respuestas
+
+P1#Consulta: db.tweet.find({text:{$regex:".*lies.*", $options:"i"}}).count();
+
+
+
+P2#Instrucción que crea el índice: db.tweet.createIndex({text:"text"},"itext");
+ 
+
+P3#Consulta: db.tweet.find({$text:{$search:".*lies.*"}}).count();
+
+
+P4#Consulta: db.tweet.find({$text:{$search:".*lies.*"}, text:{$regex:"^((?!lies).)*$"}}).count();
+
+5#Instrucción índice 1: db.user.createIndex({mentions:-1},"mendown");
+5#Instrucción índice 2: db.user.createIndex({followers:1},"follup",{unique:true});
+
+
+
+6#Consulta: db.user.find({followers:{$gt :30}},{_id:false, followers:true, mentions:true});
+
+
+P7#
+Instrucción: db.user.explain().find({followers:{$gt :30}},{_id:false, followers:true, mentions:true});
+db.user.explain("executionStats").find({followers:{$gt :30}},{_id:false, followers:true, mentions:true});
+
+
+Índices (nombres de los índices separados por comas (o “ninguno”)): follup
+Documentos (el total de  documentos accedidos): "totalDocsExamined" : 141
+		
+Claves (total de claves de índice a las que se han accedido): "totalKeysExamined" : 141
+
+P8# 
+Índices: db.user.createIndex({followers:1 , mentions:-1},"iMejora");
+Documentos: "totalDocsExamined" : 0,
+Claves: "totalKeysExamined" : 141
+Explicación: Ha cambiado el número de documentos examinados a 0 porque el índice compuesto no necesita acceder a los documentos.
+
+
+P9# db.user.find({$where:"this.followers > this.mentions"});
+Índices: "ninguno"
+Explicación: No necesita usar índices pues compara los valores de cada documento consigo mismo.
+Rechazados: []
+
+P10#
+Más eficiente (a/b/ninguna): ninguna
+Explicación: Ninguna de las dos usa índices, podemos hacer ordenaciones usando índices con solo una de las claves, para usar un índice y no tener que ordenar, tendríamos que crear un índice para las 2 claves que queremos en el orden que queremos.
